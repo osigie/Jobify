@@ -1,13 +1,19 @@
 
 
-
-const FormRow = ({value,name, labelText, type, handleChange }) => {
+const FormRow = ({ value, name, labelText, type, handleChange }) => {
   return (
     <label className="form-label">
-            {labelText || "name"}
-            <input type= {type} value={value} className="form-input" onChange={handleChange} name = {name}></input>
-          </label>
-  )
-}
+      {labelText || "name"}
+      <input
+        type={type}
+        value={value}
+        className="form-input"
+        onChange={handleChange}
+        name={name}
 
-export default FormRow
+      ></input>
+    </label>
+  );
+};
+
+export default FormRow;

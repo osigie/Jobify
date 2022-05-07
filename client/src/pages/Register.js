@@ -1,37 +1,45 @@
 import Wrapper from "../assets/wrappers/RegisterPage";
-import { useState, useNavigation, useEffect } from "react";
+import { useState, useNavigation, useEffect, useRef } from "react";
 import { Logo, FormRow, Alert } from "../components/index";
-
+import { useAppContext } from "../context/AppContext";
 const Register = () => {
   const initialState = {
     name: "",
     email: "",
     password: "",
     isMember: true,
-    isAlert: true,
   };
 
   const [details, setDetails] = useState(initialState);
   //global state and useNavigate
+  const { isLoading, isAlert, changeAlert } = useAppContext();
 
   const toggleMember = () => {
+
     setDetails({ ...details, isMember: !details.isMember });
   };
 
   const handleChange = (e) => {
-    console.log(e.target);
+    console.log(e.target)
+    setDetails({ ...details, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    const { name, email, password, isMember } = details;
+    if (!email || !password || (!isMember && !name)) {
+      changeAlert();
+      return;
+    }
+    console.log(details);
   };
+
   return (
     <Wrapper className="full-page">
       <form onSubmit={handleSubmit} className="form ">
         <Logo />
 
         <h3> {details.isMember ? "Login" : "Register"}</h3>
-        {details.isAlert && <Alert />}
+        {isAlert && <Alert />}
         <div className="form-row">
           {/* name field */}
           {!details.isMember && (
@@ -50,7 +58,7 @@ const Register = () => {
             handleChange={handleChange}
             labelText={"email"}
             type="email"
-            name={"password"}
+            name={"email"}
           />
           {/* password field */}
           <FormRow
