@@ -7,12 +7,23 @@ export const register = async (req, res) => {
   if (!name || !password || !email) {
     throw new BadRequestError("Please provide all fields");
   }
-  const userAlreadyExist = User.findOne({ email: email });
+  const userAlreadyExist = await User.findOne({ email });
+
   if (userAlreadyExist) {
     throw new BadRequestError("Email already registered");
   }
+
   const user = await User.create(req.body);
-  res.status(StatusCodes.CREATED).json({ user });
+  const token = user.createJWT();
+  res.status(StatusCodes.CREATED).json({
+    user: {
+      email: user.email,
+      lastname: user.lastname,
+      location: user.location,
+      name: user.name,
+    },
+    token,
+  });
 };
 export const login = async (req, res) => {
   res.send("login");
