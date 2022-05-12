@@ -4,6 +4,9 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
+  SETUP_LOGIN_BEGIN,
+  SETUP_LOGIN_SUCCESS,
+  SETUP_LOGIN_ERROR,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -49,7 +52,35 @@ export const reducer = (state, action) => {
       isLoading: false,
       alertText: action.payload.msg,
       alertType: "danger",
+    };
+  }
 
+  if (action.type === SETUP_LOGIN_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === SETUP_LOGIN_SUCCESS) {
+    return {
+      ...state,
+      isAlert: true,
+      isLoading: false,
+      alertText: "Login successful! Loading.....",
+      alertType: "success",
+      user: action.payload.user,
+      token: action.payload.token,
+      userLocation: action.payload.location,
+      jobLocation: action.payload.location,
+    };
+  }
+  if (action.type === SETUP_LOGIN_ERROR) {
+    return {
+      ...state,
+      isAlert: true,
+      isLoading: false,
+      alertText: action.payload.msg,
+      alertType: "danger",
     };
   }
   throw new Error(`no such action:${action.type}`);
