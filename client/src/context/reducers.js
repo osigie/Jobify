@@ -1,3 +1,5 @@
+import { initialState } from "./AppContext";
+
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
@@ -7,6 +9,8 @@ import {
   SETUP_LOGIN_BEGIN,
   SETUP_LOGIN_SUCCESS,
   SETUP_LOGIN_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -81,6 +85,22 @@ export const reducer = (state, action) => {
       isLoading: false,
       alertText: action.payload.msg,
       alertType: "danger",
+    };
+  }
+  if (action.type === TOGGLE_SIDEBAR) {
+    return {
+      ...state,
+      showSideBar: !state.showSideBar,
+    };
+  }
+
+  if (action.type === LOGOUT_USER) {
+    return {
+      ...initialState,
+      user: null,
+      token: null,
+      userLocation: "",
+      jobLocation: "",
     };
   }
   throw new Error(`no such action:${action.type}`);
