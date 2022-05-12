@@ -28,8 +28,8 @@ function App() {
         >
           <Route path="add-jobs" element={<AddJobs />}></Route>
           <Route path="all-jobs" element={<AllJobs />}></Route>
-          <Route path="stats" element={<Stats />}></Route>
-          <Route index element={<Profile />}></Route>
+          <Route  index element={<Stats />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />
