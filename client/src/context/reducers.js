@@ -14,6 +14,11 @@ import {
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
+  CLEAR_VALUES,
+  CREATE_JOB_BEGIN,
+  CREATE_JOB_SUCCESS,
+  CREATE_JOB_ERROR
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -136,5 +141,55 @@ export const reducer = (state, action) => {
       alertType: "danger",
     };
   }
+
+  if (action.type === HANDLE_CHANGE) {
+    return {
+      ...state,
+      [action.payload.target.name]: action.payload.target.value,
+    };
+  }
+
+  if (action.type === CLEAR_VALUES) {
+    const initialState = {
+      isEditing: false,
+      editJobId: "",
+      position: "",
+      company: "",
+      jobLocation: state.userLocation,
+      jobType: "full-time",
+      status: "pending",
+    };
+    return { ...state, ...initialState };
+  }
+
+
+
+
+
+  if (action.type === CREATE_JOB_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === CREATE_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      alertText: "Created successfully",
+      alertType: "success",
+      isAlert: true,
+    };
+  }
+  if (action.type === CREATE_JOB_ERROR) {
+    return {  
+      ...state,
+      isAlert: true,
+      isLoading: false,
+      alertText: action.payload.msg,
+      alertType: "danger",
+    };
+  }
+
   throw new Error(`no such action:${action.type}`);
 };

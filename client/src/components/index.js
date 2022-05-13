@@ -4,4 +4,5 @@ import Alert from "./Alert"
 import BigSideBar from "./BigSideBar"
 import Navbar from "./Navbar"
 import SmallSideBar from "./SmallSideBar"
-export {Logo, FormRow, Alert,SmallSideBar, Navbar,BigSideBar}
+import Select from "./Select"
+export {Logo, FormRow, Alert,SmallSideBar, Navbar,BigSideBar, Select}
