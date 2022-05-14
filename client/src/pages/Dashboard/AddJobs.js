@@ -77,7 +77,7 @@ const AddJobs = () => {
           />
           <Select
             data={jobTypeOptions}
-            jobType={jobType}
+            value={jobType}
             labelText={"Job Type"}
             handleChangeSelect={handleChange}
             name={"jobType"}

@@ -1,11 +1,11 @@
-const Select = ({ data, jobType, handleChangeSelect, labelText, name }) => {
+const Select = ({ data, value, handleChangeSelect, labelText, name }) => {
   return (
     <div className="form-row">
       <label className="form-label">
         {labelText || name}
         <select
           name={name}
-          value={jobType}
+          value={value}
           onChange={handleChangeSelect}
           className="form-select"
         >

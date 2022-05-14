@@ -1,4 +1,4 @@
-import { useContext, createContext, useReducer} from "react";
+import { useContext, createContext, useReducer } from "react";
 
 import { reducer } from "./reducers";
 import axios from "axios";
@@ -30,6 +30,8 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -48,7 +50,6 @@ export const initialState = {
   userLocation: userLocation || "",
   showSideBar: false,
   isEditing: false,
- 
   editJobId: "",
   position: "",
   company: "",
@@ -63,6 +64,11 @@ export const initialState = {
   numOfPages: 1,
   stats: {},
   monthlyApplications: [],
+  search: "",
+  searchStatus: "all",
+  searchType: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a "],
 };
 
 const AppContext = createContext();
@@ -242,8 +248,11 @@ const AppProvider = ({ children }) => {
   };
 
   const getAllJobs = async () => {
-    let url = `/jobs/createJob/`;
-
+    const { search, searchType, searchStatus, sort } = values;
+    let url = `/jobs/createJob?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
     dispatch({ type: GET_JOBS_BEGIN });
 
     try {
@@ -314,10 +323,14 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error.response)
+      console.log(error.response);
       //logOut()
     }
     clearAlert();
+  };
+
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
   };
 
   return (
@@ -337,7 +350,8 @@ const AppProvider = ({ children }) => {
         setEditJob,
         setDeleteJob,
         editJob,
-        showStats
+        showStats,
+        clearFilters,
       }}
     >
       {children}
