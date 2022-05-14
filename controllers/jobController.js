@@ -6,7 +6,7 @@ import {
   unAuthenticatedError,
 } from "../Errors/index.js";
 
-import {checkPermission} from "./checkPermission.js"
+import { checkPermissions } from "./checkPermission.js";
 
 export const createJob = async (req, res) => {
   const { company, position } = req.body;
@@ -19,7 +19,15 @@ export const createJob = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ job: data });
 };
 export const deleteJobs = async (req, res) => {
-  res.send("deleteJobs");
+  const { id: jobId } = req.params;
+  const job = await Job.findOne({ _id: jobId });
+  if (!job) {
+    throw new NotFoundError(`No job with id ${jobId}`);
+  }
+  checkPermissions(req.user, job.createdBy);
+
+  await job.remove();
+  res.status(StatusCodes.OK).json({ msg: "Job successfully deleted" });
 };
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({ createdBy: req.user.userId });
@@ -30,8 +38,7 @@ export const getAllJobs = async (req, res) => {
 };
 
 export const updateJobs = async (req, res) => {
-    checkPermission(Job, req )
-    const jobId = req.params
+  const { id: jobId } = req.params;
   const { company, position } = req.body;
 
   if (!company || !position) {
@@ -41,6 +48,8 @@ export const updateJobs = async (req, res) => {
   if (!job) {
     throw new NotFoundError(`No job with id ${jobId}`);
   }
+  checkPermissions(req.user, job.createdBy);
+
   const updated = await Job.findOneAndUpdate({ _id: jobId }, req.body, {
     new: true,
     runValidators: true,
