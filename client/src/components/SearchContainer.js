@@ -36,6 +36,7 @@ const SearchContainer = () => {
           {/* search position */}
 
           <FormRow
+            labelText="search"
             type="text"
             name="search"
             value={search}

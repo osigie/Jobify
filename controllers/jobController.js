@@ -52,24 +52,34 @@ export const getAllJobs = async (req, res) => {
   }
   let result = Job.find(queryObj);
 
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "z-a") {
+    result = result.sort("-position");
+  }
 
-  if (sort === 'latest') {
-    result = result.sort('-createdAt')
-  }
-  if (sort === 'oldest') {
-    result = result.sort('createdAt')
-  }
-  if (sort === 'a-z') {
-    result = result.sort('position')
-  }
-  if (sort === 'z-a') {
-    result = result.sort('-position')
-  }
+  //pagination
+
+  const page = +req.query.page || 1;
+
+  const limit = +req.query.limit || 10;
+  const skip = (page - 1) * limit;
+  result = result.skip(skip).limit(limit);
 
   const jobs = await result;
+
+  const totalJobs = await Job.countDocuments(queryObj);
+  const totalPages = Math.ceil(totalJobs / limit);
   res
     .status(StatusCodes.OK)
-    .json({ jobs, totalJobs: jobs.length, numOfPages: 1 });
+    .json({ jobs, totalJobs: totalJobs, numOfPages: totalPages });
 };
 
 export const updateJobs = async (req, res) => {

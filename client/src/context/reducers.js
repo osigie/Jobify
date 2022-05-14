@@ -29,7 +29,7 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
-  CHANGE_PAGE
+  CHANGE_PAGE,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -156,6 +156,7 @@ export const reducer = (state, action) => {
   if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
+      page: 1,
       [action.payload.target.name]: action.payload.target.value,
     };
   }
@@ -262,7 +263,7 @@ export const reducer = (state, action) => {
     return {
       ...state,
       isLoading: true,
-      showAlert:false
+      showAlert: false,
     };
   }
 
@@ -277,14 +278,14 @@ export const reducer = (state, action) => {
   if (action.type === CLEAR_FILTERS) {
     return {
       ...state,
-      search: '',
-      searchStatus: 'all',
-      searchType: 'all',
-      sort: 'latest',
-    }
+      search: "",
+      searchStatus: "all",
+      searchType: "all",
+      sort: "latest",
+    };
   }
   if (action.type === CHANGE_PAGE) {
-    return { ...state, page: action.payload.page }
+    return { ...state, page: action.payload.page };
   }
 
   throw new Error(`no such action:${action.type}`);

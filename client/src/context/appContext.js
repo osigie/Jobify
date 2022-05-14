@@ -248,8 +248,8 @@ const AppProvider = ({ children }) => {
   };
 
   const getAllJobs = async () => {
-    const { search, searchType, searchStatus, sort } = values;
-    let url = `/jobs/createJob?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+    const { search, searchType, searchStatus, sort,page } = values;
+    let url = `/jobs/createJob?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
     if (search) {
       url = url + `&search=${search}`;
     }
@@ -323,8 +323,8 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error.response);
-      //logOut()
+      // console.log(error.response);
+      logOut()
     }
     clearAlert();
   };
@@ -333,6 +333,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_FILTERS });
   };
 
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
+  }
   return (
     <AppContext.Provider
       value={{
@@ -352,6 +356,7 @@ const AppProvider = ({ children }) => {
         editJob,
         showStats,
         clearFilters,
+        changePage
       }}
     >
       {children}

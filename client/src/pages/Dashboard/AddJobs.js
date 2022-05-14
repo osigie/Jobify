@@ -10,8 +10,6 @@ const AddJobs = () => {
     company,
     jobLocation,
     jobType,
-    status,
-    statusOptions,
     jobTypeOptions,
     isEditing,
     displayAlert,
