@@ -256,8 +256,8 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const urls = "/api/v1/jobs/";
-  
+  const urls = "/jobs/";
+
   const setEditJob = async (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } });
   };
