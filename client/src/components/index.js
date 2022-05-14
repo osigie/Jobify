@@ -9,6 +9,9 @@ import SearchContainer from "./SearchContainer";
 import JobContainer from "./JobContainer";
 import SingleJob from "./SingleJob";
 import JobInfo from "./JobInfo";
+import StatsComponent from "./StatsComponent";
+import ChartContainer from "./ChartContainer";
+import Loading from "./Loading";
 export {
   Logo,
   FormRow,
@@ -20,5 +23,8 @@ export {
   SearchContainer,
   JobContainer,
   SingleJob,
-  JobInfo
+  JobInfo,
+  StatsComponent,
+  ChartContainer,
+  Loading
 };

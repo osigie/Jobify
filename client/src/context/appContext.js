@@ -1,4 +1,4 @@
-import { useContext, createContext, useReducer, useEffect } from "react";
+import { useContext, createContext, useReducer} from "react";
 
 import { reducer } from "./reducers";
 import axios from "axios";
@@ -28,6 +28,8 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -46,7 +48,7 @@ export const initialState = {
   userLocation: userLocation || "",
   showSideBar: false,
   isEditing: false,
-  jobLocation: userLocation || "",
+ 
   editJobId: "",
   position: "",
   company: "",
@@ -59,6 +61,8 @@ export const initialState = {
   page: 1,
   totalJobs: 0,
   numOfPages: 1,
+  stats: {},
+  monthlyApplications: [],
 };
 
 const AppContext = createContext();
@@ -297,6 +301,25 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const showStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN });
+
+    try {
+      const { data } = await authFetch("/jobs/stats");
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      });
+    } catch (error) {
+      console.log(error.response)
+      //logOut()
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -314,6 +337,7 @@ const AppProvider = ({ children }) => {
         setEditJob,
         setDeleteJob,
         editJob,
+        showStats
       }}
     >
       {children}
