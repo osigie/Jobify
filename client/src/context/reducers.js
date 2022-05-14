@@ -18,7 +18,10 @@ import {
   CLEAR_VALUES,
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
-  CREATE_JOB_ERROR
+  CREATE_JOB_ERROR,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
 } from "./actions";
 
 export const reducer = (state, action) => {
@@ -162,10 +165,6 @@ export const reducer = (state, action) => {
     return { ...state, ...initialState };
   }
 
-
-
-
-
   if (action.type === CREATE_JOB_BEGIN) {
     return {
       ...state,
@@ -182,7 +181,7 @@ export const reducer = (state, action) => {
     };
   }
   if (action.type === CREATE_JOB_ERROR) {
-    return {  
+    return {
       ...state,
       isAlert: true,
       isLoading: false,
@@ -191,5 +190,37 @@ export const reducer = (state, action) => {
     };
   }
 
+  if (action.type === GET_JOBS_BEGIN) {
+    return {
+      ...state,
+      isAlert: false,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_JOBS_SUCCESS) {
+    return {
+      ...state,
+
+      isLoading: false,
+      numOfPages: action.payload.numOfPages,
+      jobs: action.payload.jobs,
+      totalJobs: action.payload.totalJobs,
+    };
+  }
+  if (action.type === SET_EDIT_JOB) {
+    const { company, _id, position, jobLocation, jobType, status } =
+      state.jobs.find((job) => job._id === action.payload.id);
+    return {
+      ...state,
+      isEditing: true,
+      company,
+      editJobId: _id,
+      position,
+      jobLocation,
+      jobType,
+      status,
+    };
+  }
   throw new Error(`no such action:${action.type}`);
 };
